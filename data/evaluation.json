@@ -1,0 +1,43 @@
+
+[
+  {
+    "question": "Đơn hàng 600.000 VND có được miễn phí vận chuyển không?",
+    "expected_source": "shipping.md",
+    "expected_fact": "Đơn hàng từ 500.000 VND trở lên được miễn phí vận chuyển tiêu chuẩn."
+  },
+  {
+    "question": "Nếu đơn hàng có giá trị 300.000 VND thì phí giao hàng tiêu chuẩn là bao nhiêu?",
+    "expected_source": "shipping.md",
+    "expected_fact": "Đơn hàng dưới 500.000 VND có phí vận chuyển tiêu chuẩn 30.000 VND."
+  },
+  {
+    "question": "Khách hàng có bao lâu để yêu cầu đổi trả sản phẩm?",
+    "expected_source": "returns.md",
+    "expected_fact": "Yêu cầu đổi trả phải được gửi trong vòng 7 ngày kể từ ngày nhận sản phẩm."
+  },
+  {
+    "question": "Ai trả phí vận chuyển khi sản phẩm bị lỗi do nhà sản xuất?",
+    "expected_source": "returns.md",
+    "expected_fact": "Orbit Shop chịu phí vận chuyển đổi trả nếu lỗi do nhà sản xuất được xác nhận."
+  },
+  {
+    "question": "Cửa hàng chấp nhận những phương thức thanh toán nào?",
+    "expected_source": "payment.md",
+    "expected_fact": "COD đối với đơn đủ điều kiện, chuyển khoản ngân hàng và thẻ ngân hàng qua cổng thanh toán."
+  },
+  {
+    "question": "Giá của Wireless Mouse là bao nhiêu?",
+    "expected_source": "products.csv",
+    "expected_fact": "Wireless Mouse có giá 250000 VND."
+  },
+  {
+    "question": "Thời gian giao hàng đến Hà Nội thường là bao lâu?",
+    "expected_source": "shipping.md",
+    "expected_fact": "Thời gian giao hàng tại Hà Nội thường là 2–4 ngày làm việc."
+  },
+  {
+    "question": "Orbit Shop có hỗ trợ thanh toán bằng Bitcoin không?",
+    "expected_source": "faq.md",
+    "expected_fact": "Tài liệu hiện tại chưa xác nhận hỗ trợ Bitcoin; khách hàng nên liên hệ bộ phận hỗ trợ."
+  }
+]
