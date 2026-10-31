@@ -7,7 +7,7 @@ import chromadb
 import re
 
 # Xác định thư mục gốc của project
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_DIR = PROJECT_ROOT/"data"
 
 

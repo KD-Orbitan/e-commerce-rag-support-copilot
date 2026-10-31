@@ -6,7 +6,7 @@ import chromadb
 from dotenv import load_dotenv
 from openai import OpenAI
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DB_PATH = PROJECT_ROOT / "chroma_db"
 COLLECTION_NAME = "orbit_shop_knowledge"
 
@@ -66,7 +66,7 @@ def search_knowledge(question: str, top_k: int = 3) -> list[dict]:
 
 
 if __name__ == "__main__":
-    question = "Đơn hàng 600.000 VND có được miễn phí vận chuyển không?"
+    question = "Tôi muốn thanh toán bằng crypto thì sao?"
 
     matches = search_knowledge(question, top_k=3)
 
