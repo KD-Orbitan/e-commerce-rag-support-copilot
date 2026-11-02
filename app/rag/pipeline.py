@@ -12,7 +12,15 @@ def run_rag(question: str, top_k: int = 3) -> dict:
     """
 
     # 1. Retrieve
-    matches = search_knowledge(question, top_k=top_k)
+    try:
+        matches = search_knowledge(question, top_k=top_k)
+    except Exception as exc:
+        return {
+            "question": question,
+            "answer": str(exc),
+            "sources": [],
+            "abstained": True,
+        }
 
     # 2. Xử lý trường hợp không tìm thấy tài liệu
     if not matches:
@@ -20,6 +28,7 @@ def run_rag(question: str, top_k: int = 3) -> dict:
             "question": question,
             "answer": "Xin lỗi, hiện tại tôi chưa tìm thấy thông tin liên quan để trả lời câu hỏi này.",
             "sources": [],
+            "abstained": True,
         }
 
     # 3. Ghép các chunks thành context
@@ -33,10 +42,25 @@ def run_rag(question: str, top_k: int = 3) -> dict:
     context = "\n\n".join(context_parts)
 
     # 4. Generate answer
-    answer = generate_answer(
-        question=question,
-        context=context,
-    )
+    try:
+        answer = generate_answer(
+            question=question,
+            context=context,
+        )
+    except Exception as exc:
+        return {
+            "question": question,
+            "answer": str(exc),
+            "sources": [
+                {
+                    "id": match["id"],
+                    "source": match["source"],
+                    "distance": match["distance"],
+                }
+                for match in matches
+            ],
+            "abstained": True,
+        }
 
     # 5. Trả về kết quả
     sources = [
@@ -52,11 +76,13 @@ def run_rag(question: str, top_k: int = 3) -> dict:
         "question": question,
         "answer": answer,
         "sources": sources,
+        "abstained": False,
     }
 
 
 if __name__ == "__main__":
-    question = "Tôi muốn thanh toán bằng crypto thì sao?"
+    # question = "Tôi muốn thanh toán bằng crypto thì sao?"
+    question = "Cửa hàng có hỗ trợ thanh toán Bitcoin không?"
 
     result = run_rag(question)
 

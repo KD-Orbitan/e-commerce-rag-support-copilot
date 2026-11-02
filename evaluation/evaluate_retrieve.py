@@ -2,7 +2,7 @@
 import json
 from pathlib import Path
 
-from retrieve import search_knowledge
+from app.rag.retriever import search_knowledge
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent

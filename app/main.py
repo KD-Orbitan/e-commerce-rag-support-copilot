@@ -28,8 +28,8 @@ def chat(request: ChatRequest):
         )
         return result
 
-    except Exception as e:
+    except Exception:
         raise HTTPException(
             status_code=500,
-            detail=f"Failed to process question: {str(e)}",
+            detail="Không thể xử lý câu hỏi. Dịch vụ AI đang gặp sự cố.",
         )

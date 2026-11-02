@@ -6,3 +6,6 @@
 __pycache__/
 chroma_db/
 *.pyc
+
+requirement.md
+.vscode/

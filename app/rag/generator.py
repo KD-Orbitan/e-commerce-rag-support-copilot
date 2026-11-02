@@ -1,8 +1,6 @@
 from openai import OpenAI
 from app.config import OPENAI_API_KEY, LLM_MODEL
 
-client = OpenAI(api_key=OPENAI_API_KEY)
-
 
 SYSTEM_PROMPT = """
 Bạn là trợ lý hỗ trợ khách hàng của một cửa hàng trực tuyến.
@@ -17,18 +15,28 @@ Quy tắc:
 
 
 def generate_answer(question: str, context: str) -> str:
-    response = client.chat.completions.create(
-        model=LLM_MODEL,
-        messages=[
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {
-                "role": "user",
-                "content": f"CONTEXT:\n{context}\n\nQUESTION:\n{question}"
-            }
-        ]
-    )
+    if not OPENAI_API_KEY:
+        raise RuntimeError(
+            "Dịch vụ AI chưa được cấu hình: thiếu OPENAI_API_KEY."
+        )
 
-    return response.choices[0].message.content
+    try:
+        client = OpenAI(api_key=OPENAI_API_KEY)
+        response = client.chat.completions.create(
+            model=LLM_MODEL,
+            messages=[
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {
+                    "role": "user",
+                    "content": f"CONTEXT:\n{context}\n\nQUESTION:\n{question}"
+                }
+            ]
+        )
+        return response.choices[0].message.content
+    except Exception as exc:
+        raise RuntimeError(
+            "Không thể tạo câu trả lời do dịch vụ OpenAI đang gặp sự cố."
+        ) from exc
 
 if __name__ == "__main__":
     # question = "Tôi có thể đổi trả trong bao lâu?"

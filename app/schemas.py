@@ -17,3 +17,4 @@ class ChatResponse(BaseModel):
     question: str
     answer: str
     sources: list[Source]
+    abstained: bool = False
