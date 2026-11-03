@@ -69,6 +69,12 @@ Chạy giao diện Gradio trực tiếp (không cần chạy API riêng):
 python app.py
 ```
 
+Chạy giao diện Streamlit trực tiếp:
+
+```powershell
+streamlit run streamlit_app.py
+```
+
 Hoặc tạo index và chạy API riêng cho local development:
 
 ```powershell
@@ -132,6 +138,35 @@ Day 3.
 5. Build Space và kiểm tra cả câu có đáp án lẫn câu không có đáp án.
 
 Không commit khóa API hoặc file `.env`. Không có URL demo placeholder trong README này.
+
+## Deploy Streamlit Community Cloud
+
+1. Đưa repository lên GitHub (không commit `.env`, khóa API hoặc thư mục `chroma_db`).
+2. Trên Streamlit Community Cloud, chọn repository và đặt entry point chính xác là:
+
+```text
+streamlit_app.py
+```
+
+3. Trong phần **App settings > Secrets**, thêm cấu hình:
+
+```toml
+OPENAI_API_KEY = "your-openai-api-key"
+LLM_MODEL = "gpt-4o-mini"
+EMBEDDING_MODEL = "text-embedding-3-small"
+```
+
+4. Deploy bằng lệnh:
+
+```powershell
+streamlit run streamlit_app.py
+```
+
+Ứng dụng đọc model và khóa API từ Streamlit Secrets, sau đó fallback về `.env`
+ở local. Khi chạy trên Streamlit Cloud, thư mục `chroma_db` có thể chưa tồn tại.
+Ứng dụng sẽ tạo index một lần từ các tài liệu trong `data/` bằng `ensure_index()`;
+việc này chỉ gọi embedding API khi collection vẫn trống. Data trong thư mục local
+của Streamlit chỉ tồn tại cho đến khi container restart hoặc redeploy.
 
 ## Giới hạn
 
