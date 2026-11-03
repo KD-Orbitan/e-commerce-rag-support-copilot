@@ -4,7 +4,6 @@ emoji: 🛍️
 colorFrom: blue
 colorTo: indigo
 sdk: gradio
-sdk_version: 6.31.0
 app_file: app.py
 pinned: false
 ---
@@ -140,5 +139,5 @@ Không commit khóa API hoặc file `.env`. Không có URL demo placeholder tron
 - Độ chính xác phụ thuộc vào chất lượng retrieval, model embedding và khả năng
   của nhà cung cấp LLM.
 - Demo không tra cứu đơn hàng thật; mã đơn hàng chỉ được dùng để kiểm tra abstention.
-- Một lần restart Docker có thể mất cache/persistent data; entrypoint chủ động
+- Một lần Space restart có thể mất cache/persistent data; ứng dụng chủ động
   nạp lại tài liệu để xử lý trường hợp này.
