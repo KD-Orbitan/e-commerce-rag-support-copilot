@@ -1,43 +1,32 @@
-
 [
-  {
-    "question": "Đơn hàng 600.000 VND có được miễn phí vận chuyển không?",
-    "expected_source": "shipping.md",
-    "expected_fact": "Đơn hàng từ 500.000 VND trở lên được miễn phí vận chuyển tiêu chuẩn."
-  },
-  {
-    "question": "Nếu đơn hàng có giá trị 300.000 VND thì phí giao hàng tiêu chuẩn là bao nhiêu?",
-    "expected_source": "shipping.md",
-    "expected_fact": "Đơn hàng dưới 500.000 VND có phí vận chuyển tiêu chuẩn 30.000 VND."
-  },
-  {
-    "question": "Khách hàng có bao lâu để yêu cầu đổi trả sản phẩm?",
-    "expected_source": "returns.md",
-    "expected_fact": "Yêu cầu đổi trả phải được gửi trong vòng 7 ngày kể từ ngày nhận sản phẩm."
-  },
-  {
-    "question": "Ai trả phí vận chuyển khi sản phẩm bị lỗi do nhà sản xuất?",
-    "expected_source": "returns.md",
-    "expected_fact": "Orbit Shop chịu phí vận chuyển đổi trả nếu lỗi do nhà sản xuất được xác nhận."
-  },
-  {
-    "question": "Cửa hàng chấp nhận những phương thức thanh toán nào?",
-    "expected_source": "payment.md",
-    "expected_fact": "COD đối với đơn đủ điều kiện, chuyển khoản ngân hàng và thẻ ngân hàng qua cổng thanh toán."
-  },
-  {
-    "question": "Giá của Wireless Mouse là bao nhiêu?",
-    "expected_source": "products.csv",
-    "expected_fact": "Wireless Mouse có giá 250000 VND."
-  },
-  {
-    "question": "Thời gian giao hàng đến Hà Nội thường là bao lâu?",
-    "expected_source": "shipping.md",
-    "expected_fact": "Thời gian giao hàng tại Hà Nội thường là 2–4 ngày làm việc."
-  },
-  {
-    "question": "Orbit Shop có hỗ trợ thanh toán bằng Bitcoin không?",
-    "expected_source": "faq.md",
-    "expected_fact": "Tài liệu hiện tại chưa xác nhận hỗ trợ Bitcoin; khách hàng nên liên hệ bộ phận hỗ trợ."
-  }
+  {"question":"Đơn hàng 600.000 VND có được miễn phí vận chuyển không?","expected_source":"shipping.md","expected_chunk":"shipping_001","expected_fact":"Đơn hàng từ 500.000 VND trở lên được miễn phí vận chuyển tiêu chuẩn.","category":"direct"},
+  {"question":"Nếu đơn hàng có giá trị 300.000 VND thì phí giao hàng tiêu chuẩn là bao nhiêu?","expected_source":"shipping.md","expected_chunk":"shipping_001","expected_fact":"Đơn hàng dưới 500.000 VND có phí vận chuyển tiêu chuẩn 30.000 VND.","category":"direct"},
+  {"question":"Khách hàng có bao lâu để yêu cầu đổi trả sản phẩm?","expected_source":"returns.md","expected_chunk":"returns_001","expected_fact":"Yêu cầu đổi trả phải được gửi trong vòng 7 ngày kể từ ngày nhận sản phẩm.","category":"direct"},
+  {"question":"Ai trả phí vận chuyển khi sản phẩm bị lỗi do nhà sản xuất?","expected_source":"returns.md","expected_chunk":"returns_003","expected_fact":"Orbit Shop chịu phí vận chuyển đổi trả nếu lỗi do nhà sản xuất được xác nhận.","category":"direct"},
+  {"question":"Cửa hàng chấp nhận những phương thức thanh toán nào?","expected_source":"faq.md","expected_chunk":"faq_004","expected_fact":"COD, chuyển khoản ngân hàng và thẻ ngân hàng.","category":"direct"},
+  {"question":"Giá của Wireless Mouse là bao nhiêu?","expected_source":"products.csv","expected_chunk":"P001","expected_fact":"Wireless Mouse có giá 250000 VND.","category":"direct"},
+  {"question":"Thời gian giao hàng đến Hà Nội thường là bao lâu?","expected_source":"shipping.md","expected_chunk":"shipping_002","expected_fact":"Thời gian giao hàng tại Hà Nội thường là 2–4 ngày làm việc.","category":"direct"},
+  {"question":"Orbit Shop có hỗ trợ thanh toán bằng Bitcoin không?","expected_source":"faq.md","expected_chunk":"faq_006","expected_fact":"Tài liệu chưa xác nhận hỗ trợ Bitcoin.","category":"direct"},
+  {"question":"Dịch vụ giao hàng nhanh tính phí bao nhiêu?","expected_source":"shipping.md","expected_chunk":"shipping_003","expected_fact":"Phí giao hàng nhanh là 50.000 VND.","category":"direct"},
+  {"question":"Bàn phím cơ Mechanical Keyboard đang bán với giá nào?","expected_source":"products.csv","expected_chunk":"P002","expected_fact":"Mechanical Keyboard có giá 850000 VND.","category":"direct"},
+  {"question":"Một đơn ở TP. Hồ Chí Minh giao tiêu chuẩn mất bao lâu?","expected_source":"shipping.md","expected_chunk":"shipping_002","expected_chunks":["shipping_002"],"expected_fact":"Nội thành TP. Hồ Chí Minh thường giao trong 1–2 ngày làm việc.","category":"multi_hop"},
+  {"question":"Hàng mua ngoài tỉnh bị lỗi nhà sản xuất thì ai chịu tiền ship đổi trả?","expected_source":"returns.md","expected_chunk":"returns_003","expected_chunks":["returns_003"],"expected_fact":"Orbit Shop chịu phí vận chuyển đổi trả khi lỗi nhà sản xuất được xác nhận.","category":"multi_hop"},
+  {"question":"Khách ở Hà Nội mua 450.000 VND, đổi bằng giao hàng nhanh thì tổng phí vận chuyển là bao nhiêu?","expected_source":"shipping.md","expected_chunk":"shipping_001","expected_chunks":["shipping_001","shipping_003"],"expected_fact":"Đơn dưới 500.000 VND trả phí tiêu chuẩn 30.000 VND; giao hàng nhanh có phí 50.000 VND.","category":"multi_hop"},
+  {"question":"Đổi trả vì đổi ý, hàng nguyên vẹn thì ai trả phí ship?","expected_source":"returns.md","expected_chunk":"returns_005","expected_chunks":["returns_005"],"expected_fact":"Khách hàng chịu phí vận chuyển đổi trả khi đổi trả vì lý do cá nhân.","category":"multi_hop"},
+  {"question":"Nếu đơn đã chuyển khoản nhưng chưa thấy trạng thái thanh toán, tôi nên làm gì?","expected_source":"payment.md","expected_chunk":"payment_004","expected_chunks":["payment_004"],"expected_fact":"Kiểm tra lại giao dịch và liên hệ bộ phận hỗ trợ.","category":"multi_hop"},
+  {"question":"Nếu hàng rách vì tôi làm rơi thì có được miễn phí đổi vì lỗi nhà sản xuất không?","expected_source":"returns.md","expected_chunk":"returns_004","expected_fact":"Hư hỏng do người sử dụng không được xem là lỗi nhà sản xuất.","category":"paraphrase"},
+  {"question":"Bên shop có nhận tiền mặt lúc nhận hàng hay không?","expected_source":"payment.md","expected_chunk":"payment_001","expected_fact":"COD được thanh toán trực tiếp cho đơn vị giao hàng nếu đơn đủ điều kiện.","category":"paraphrase"},
+  {"question":"Làm cách nào để theo dõi kiện hàng khi đã gửi?","expected_source":"shipping.md","expected_chunk":"shipping_004","expected_fact":"Dùng mã vận đơn được cung cấp trong thông báo giao hàng để theo dõi.","category":"paraphrase"},
+  {"question":"Khi mua qua thẻ, lúc nào mới coi giao dịch hoàn tất?","expected_source":"payment.md","expected_chunk":"payment_003","expected_fact":"Giao dịch thẻ thành công sau khi hệ thống cổng thanh toán xác nhận.","category":"paraphrase"},
+  {"question":"Có quy định gì cho tình trạng và phụ kiện của món muốn trả lại?","expected_source":"returns.md","expected_chunk":"returns_002","expected_fact":"Sản phẩm còn nguyên trạng, đầy đủ phụ kiện và không hư do người dùng.","category":"paraphrase"},
+  {"question":"Shop có nhận thanh toán bằng Ethereum không?","expected_source":null,"expected_chunk":null,"expected_fact":"Không có thông tin xác nhận phương thức Ethereum trong tài liệu.","category":"no_answer"},
+  {"question":"Orbit Shop có hỗ trợ trả góp qua thẻ tín dụng không?","expected_source":null,"expected_chunk":null,"expected_fact":"Không có chính sách trả góp trong tài liệu.","category":"no_answer"},
+  {"question":"Chính sách bảo hành của Portable SSD 1TB là bao lâu?","expected_source":null,"expected_chunk":null,"expected_fact":"Tài liệu không có thông tin bảo hành.","category":"no_answer"},
+  {"question":"Tôi có thể đổi địa chỉ giao hàng sau khi đơn đã giao cho shipper không?","expected_source":null,"expected_chunk":null,"expected_fact":"Tài liệu không quy định đổi địa chỉ sau khi bàn giao.","category":"no_answer"},
+  {"question":"Shop có giao hàng quốc tế sang Mỹ không?","expected_source":null,"expected_chunk":null,"expected_fact":"Tài liệu không nêu giao hàng quốc tế.","category":"no_answer"},
+  {"question":"Đơn hàng số DH12345 hiện đang ở kho nào?","expected_source":null,"expected_chunk":null,"expected_fact":"Hệ thống không có dữ liệu đơn hàng cụ thể và mã vận đơn.","category":"out_of_scope"},
+  {"question":"Tình trạng ví tiền của tài khoản tôi thế nào?","expected_source":null,"expected_chunk":null,"expected_fact":"Ngoài phạm vi dữ liệu cửa hàng công khai.","category":"out_of_scope"},
+  {"question":"Bạn có thể tự động hoàn tiền vào tài khoản của tôi ngay bây giờ không?","expected_source":null,"expected_chunk":null,"expected_fact":"Hệ thống không được tích hợp hoàn tiền.","category":"out_of_scope"},
+  {"question":"Hôm nay trời Hà Nội có mưa không?","expected_source":null,"expected_chunk":null,"expected_fact":"Không thuộc dữ liệu cửa hàng và không có công cụ thời tiết.","category":"out_of_scope"},
+  {"question":"Bạn viết giúp tôi một bài thơ về tình yêu được không?","expected_source":null,"expected_chunk":null,"expected_fact":"Yêu cầu không thuộc phạm vi hỗ trợ cửa hàng.","category":"out_of_scope"}
 ]
