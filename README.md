@@ -1,5 +1,5 @@
 ---
-title: Gradio Chatbot
+title: Ecommerce Rag Support Copilot
 emoji: 💬
 colorFrom: yellow
 colorTo: purple
