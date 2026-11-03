@@ -1,3 +1,14 @@
+---
+title: Orbit Shop RAG Support Copilot
+emoji: 🛍️
+colorFrom: blue
+colorTo: indigo
+sdk: gradio
+sdk_version: 6.31.0
+app_file: app.py
+pinned: false
+---
+
 # Orbit Shop RAG Support Copilot
 
 Orbit Shop là một trợ lý hỗ trợ khách hàng bằng tiếng Việt, sử dụng Retrieval-Augmented
@@ -16,7 +27,7 @@ Generation (RAG) để trả lời từ tài liệu cửa hàng thay vì tự su
 Giao diện Gradio
       |
       v
-POST /chat (FastAPI)
+POST /chat (FastAPI) hoặc app.py (Gradio Space)
       |
       v
 RAG pipeline -> từ chối ngoài phạm vi -> vector retrieval -> OpenAI generation
@@ -53,7 +64,13 @@ LLM_MODEL=gpt-4o-mini
 EMBEDDING_MODEL=text-embedding-3-small
 ```
 
-Tạo hoặc làm mới index rồi khởi động API và giao diện:
+Chạy giao diện Gradio trực tiếp (không cần chạy API riêng):
+
+```powershell
+python app.py
+```
+
+Hoặc tạo index và chạy API riêng cho local development:
 
 ```powershell
 python -m app.rag.ingest
@@ -106,37 +123,16 @@ Bộ live có 30 câu hỏi; rerun Day 3 đạt 100% correctness trên bản API
 Groundedness/citation và giới hạn từng trường hợp được ghi chi tiết trong báo cáo
 Day 3.
 
-## Docker
-
-Docker Space sẽ tạo lại vector index từ `data/` tại thời điểm container khởi động,
-nên không phụ thuộc vào dữ liệu ChromaDB của máy local.
-
-```powershell
-docker build -t orbit-shop-rag .
-docker run --rm -p 7860:7860 `
-  -e OPENAI_API_KEY="your-openai-api-key" `
-  -e LLM_MODEL="gpt-4o-mini" `
-  -e EMBEDDING_MODEL="text-embedding-3-small" `
-  orbit-shop-rag
-```
-
-Kiểm tra container:
-
-```powershell
-Invoke-RestMethod http://127.0.0.1:7860/
-Invoke-RestMethod http://127.0.0.1:8000/health
-```
-
 ## Deploy Hugging Face Spaces
 
-1. Tạo Space mới với SDK `Docker`.
-2. Đặt `EXPOSE 7860`/app port là `7860` trong cấu hình Space.
-3. Upload source, dữ liệu, `requirements.txt` và Dockerfile.
-4. Thêm `OPENAI_API_KEY`, `LLM_MODEL` và `EMBEDDING_MODEL` vào Space Secrets.
+1. Tạo Space mới với SDK `Gradio`.
+2. Giữ `ZeroGPU` ở chế độ không bắt buộc; OpenAI API không yêu cầu GPU.
+3. Upload source, dữ liệu và `requirements.txt`; không cần Dockerfile cho Space này.
+4. Thêm `OPENAI_API_KEY` vào Space Secrets; cấu hình `LLM_MODEL` và
+   `EMBEDDING_MODEL` trong Variables nếu muốn ghi đè giá trị mặc định.
 5. Build Space và kiểm tra cả câu có đáp án lẫn câu không có đáp án.
 
-Không commit khóa API hoặc file `.env`. Demo online chính thức: `Chưa deploy; hãy
-thay bằng URL Space sau khi hoàn tất build`.
+Không commit khóa API hoặc file `.env`. Không có URL demo placeholder trong README này.
 
 ## Giới hạn
 

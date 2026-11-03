@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 import chromadb
 import re
+from app.config import EMBEDDING_MODEL
 
 # Xác định thư mục gốc của project
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -199,7 +200,7 @@ def embed_and_store(chunks: list[dict]) -> None:
     texts = [chunk["text"] for chunk in chunks]
 
     response = openai_client.embeddings.create(
-        model="text-embedding-3-small",
+        model=EMBEDDING_MODEL,
         input=texts,
     )
 
@@ -235,6 +236,29 @@ def embed_and_store(chunks: list[dict]) -> None:
     print(f"Tokens used: {response.usage.total_tokens}")
 
 
+def ensure_index() -> str:
+    """Create the local index once when it is empty."""
+    load_dotenv()
+
+    if not os.getenv("OPENAI_API_KEY"):
+        return "Thiếu OPENAI_API_KEY. Vui lòng cấu hình Secret trước khi sử dụng demo."
+
+    chroma_client = chromadb.PersistentClient(
+        path=str(PROJECT_ROOT / "chroma_db")
+    )
+    collection = chroma_client.get_or_create_collection(
+        name="orbit_shop_knowledge"
+    )
+
+    if collection.count() > 0:
+        return f"Index đã sẵn sàng với {collection.count()} documents."
+
+    documents = load_documents()
+    chunks = create_chunks(documents)
+    embed_and_store(chunks)
+    return f"Index đã được khởi tạo với {collection.count()} documents."
+
+
 
 
 
@@ -263,5 +287,3 @@ if __name__ == "__main__":
 
     # Tạo embeddings và lưu dữ liệu vào ChromaDB.
     embed_and_store(chunks)
-
-

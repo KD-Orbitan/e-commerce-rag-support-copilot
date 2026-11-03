@@ -5,6 +5,7 @@ from pathlib import Path
 import chromadb
 from dotenv import load_dotenv
 from openai import OpenAI
+from app.config import EMBEDDING_MODEL
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DB_PATH = PROJECT_ROOT / "chroma_db"
@@ -26,7 +27,7 @@ def search_knowledge(question: str, top_k: int = 3) -> list[dict]:
     openai_client = OpenAI()
 
     response = openai_client.embeddings.create(
-        model="text-embedding-3-small",
+        model=EMBEDDING_MODEL,
         input=question,
     )
 
