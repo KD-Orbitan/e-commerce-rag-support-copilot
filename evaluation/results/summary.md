@@ -40,9 +40,8 @@ For every generated answer, score each criterion as 0 or 1:
 - **Citation accuracy:** Cited sources support the answer content.
 - **Abstention:** The answer declines when an answerable fact is absent.
 
-The current repository run evaluates retrieval only. Correctness and
-groundedness must be recorded from separate live `/chat` outputs so API or
-generation failures are not confused with retrieval failures.
+Manual live output và API structure đã được ghi vào `live_evaluation.md`.
+Case 13 và case 30 sai ở bản đầu đã được rerun sau khi sửa pipeline.
 
 ## Observed error risks
 
@@ -65,7 +64,7 @@ retrieval quality. This result should be treated as a retrieval-only finding.
 - The evaluation contains 30 cases but only 20 answerable facts.
 - Product coverage represents 10 products and policy coverage represents five
   Markdown files.
-- There is no fixed manual run recorded yet for correctness, groundedness,
-  citation accuracy, or abstention.
+- Live rerun đã ghi chính xác API `abstained`; câu trả lời thủ công vẫn nên
+  được đối chiếu lại khi thay đổi model hoặc prompt.
 - Results were produced with the current OpenAI embedding configuration, so
   future model or data changes require rerunning the same dataset.

@@ -33,6 +33,39 @@ def test_pipeline_abstains_when_retrieval_has_no_results(monkeypatch):
     assert "chưa tìm thấy thông tin" in result["answer"].lower()
 
 
+def test_pipeline_marks_textual_abstention(monkeypatch):
+    matches = [{
+        "id": "faq_006",
+        "text": "Các phương thức thanh toán được công khai trong tài liệu.",
+        "source": "faq.md",
+        "distance": 0.4,
+    }]
+    monkeypatch.setattr(pipeline, "search_knowledge", lambda question, top_k: matches)
+    monkeypatch.setattr(
+        pipeline,
+        "generate_answer",
+        lambda question, context: "Không có thông tin xác nhận về Ethereum.",
+    )
+
+    result = pipeline.run_rag("Shop có nhận Ethereum không?")
+
+    assert result["abstained"] is True
+    assert result["sources"][0]["id"] == "faq_006"
+
+
+def test_pipeline_rejects_out_of_scope_request(monkeypatch):
+    monkeypatch.setattr(
+        pipeline,
+        "search_knowledge",
+        lambda question, top_k: pytest.fail("Không được truy xuất ngoài phạm vi"),
+    )
+
+    result = pipeline.run_rag("Bạn viết giúp tôi một bài thơ về tình yêu được không?")
+
+    assert result["abstained"] is True
+    assert result["sources"] == []
+
+
 def test_chunking_preserves_small_sections():
     text = "## Thanh toán\n\nChấp nhận COD và thẻ ngân hàng."
 

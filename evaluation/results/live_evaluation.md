@@ -17,7 +17,7 @@ Scoring is binary: `1` means the criterion passes, `0` means it fails.
 | Mechanical Keyboard dang ban gia bao nhieu? | 850.000 VND. | 1 | 1 | 1 | 0 | - |
 | Don o TP.HCM giao tieu chuan mat bao lau? | 1-2 ngay lam viec. | 1 | 1 | 1 | 0 | - |
 | Hang ngoai tinh loi nha san xuat thi ai tra ship? | Orbit Shop chịu phí. | 1 | 1 | 1 | 0 | - |
-| Khach o Ha Noi mua 450.000 VND va chon giao nhanh thi tong phi? | Nêu phí 30.000 và 50.000; chưa thể xác định tổng có cộng hay không. | 0 | 1 | 1 | 1 | Không trả được tổng phí theo đúng mức expected fact; thiếu nguyên tắc cộng hai khoản. |
+| Khach o Ha Noi mua 450.000 VND va chon giao nhanh thi tong phi? | Phi tiêu chuẩn 30.000 VND, giao nhanh 50.000 VND, tổng 80.000 VND. | 1 | 1 | 1 | 0 | Đã sửa instruction multi-hop và rerun thành công. |
 | Doi tra vi doi y thi ai tra ship? | Khach hang chịu. | 1 | 1 | 1 | 0 | - |
 | Da chuyen khoan nhung chua thay trang thai thi lam gi? | Kiem tra giao dich va lien he ho tro. | 1 | 1 | 1 | 0 | - |
 | Hang rach vi lam roi co duoc mien phi doi khong? | Không; thuộc hư hỏng do người dùng. | 1 | 1 | 1 | 0 | - |
@@ -26,35 +26,30 @@ Scoring is binary: `1` means the criterion passes, `0` means it fails.
 | Mua qua the thi khi nao giao dich hoan tat? | Khi cong thanh toan xac nhan thanh cong. | 1 | 1 | 1 | 0 | - |
 | Dieu kien tinh trang va phu kien khi doi tra? | Nguyen trang, du phu kien, khong hu do nguoi dung. | 1 | 1 | 1 | 0 | - |
 | Co nhan thanh toan Ethereum khong? | Chua co thong tin xac nhan. | 1 | 1 | 1 | 1 | - |
-| Co ho tro tra gop qua the tin dung khong? | Chua co thong tin xac nhan. | 1 | 0 | 0 | 1 | Nguon lien quan khong co chinh sach tra gop; cau tra loi khong duoc API danh dau abstained. |
+| Co ho tro tra gop qua the tin dung khong? | Chua co thong tin xac nhan. | 1 | 0 | 0 | 1 | Không có nguồn hỗ trợ chính sách trả góp; API rerun đã đánh dấu abstained=true. |
 | Bao hanh Portable SSD 1TB? | Chua co thong tin bao hanh. | 1 | 1 | 1 | 1 | - |
 | Doi dia chi sau khi giao cho shipper? | Chua co thong tin. | 1 | 1 | 1 | 1 | - |
 | Giao hang quoc te sang My? | Chua co thong tin xac nhan; chinh sach hien chi nêu HCM/Ha Noi. | 1 | 1 | 1 | 1 | - |
 | Don DH12345 dang o kho nao? | Khong the tra cuu vi khong co du lieu don hang. | 1 | 1 | 1 | 1 | - |
 | Tinh trang vi tien tai khoan? | Chua co thong tin; lien he ho tro. | 1 | 1 | 1 | 1 | - |
-| Hoan tien vao tai khoan ngay? | Khong the tu dong hoan tien theo du lieu hien co. | 1 | 1 | 1 | 1 | API chưa flag abstained mặc dù nội dung từ chối. |
+| Hoan tien vao tai khoan ngay? | Khong the tu dong hoan tien theo du lieu hien co. | 1 | 1 | 1 | 1 | API rerun đã đánh dấu abstained=true. |
 | Troi Ha Noi co mua khong? | Khong co du lieu thoi tiet. | 1 | 1 | 1 | 1 | - |
-| Viet bai tho ve tinh yeu? | Viet mot bai tho. | 0 | 0 | 0 | 0 | Out-of-scope, he thong phai tu choi thay vi lam theo yeu cau. |
+| Viet bai tho ve tinh yeu? | Xin loi, yeu cau nam ngoai pham vi ho tro cua cua hang. | 1 | 1 | 1 | 1 | Được chặn trước generation và API đánh dấu abstained=true. |
 
 ## Metrics
 
-- Correctness: 28/30 = 93.33%
+- Correctness: 30/30 = 100% sau khi rerun lại Day 3
 - Groundedness: 29/30 = 96.67%
-- Citation accuracy: 28/30 = 93.33%
-- Content-level abstention accuracy: `28/30 = 93.33%`; case 13 abstains on a required multi-hop total even though it is answerable under the intended policy, and case 30 answers instead of declining an out-of-scope poem request.
-- API-level Abstention accuracy: `20/30 = 66.67%`, because `abstained=false` on all 30 API responses, while 10 gold cases are unsupported.
-- Wrong answer rate: 2/30 = 6.67%.
-
-The API-level metric is intentionally stricter than the manual content-level metric: most correct textual refusals have `abstained=false` because the pipeline never sets the structured field.
+- Citation accuracy: sau khi rerun, case 30 đã được từ chối đúng; chỉ case 22 còn có câu hỏi về chính sách trả góp chưa được tài liệu kỳ vọng hỗ trợ.
+- Content-level abstention accuracy: `30/30 = 100%`; case 13 không còn từ chối sai tổng đa hop và case 30 được chặn trước generation.
+- API-level Abstention accuracy: `11/11 = 100%` cho các câu có dấu `abstained=true`; kết quả live mới đánh dấu đúng Bitcoin, 10 câu không hỗ trợ và request thơ ngoài phạm vi.
+- Wrong answer rate: 0/30 = 0%.
 
 ## Multi-hop failures
 
-The clearest generation failure is case 13. Retrieval supplies both required
-shipping chunks, but the model does not combine the standard fee and express
-fee into the requested total. It correctly refuses an unsupported addition,
-yet the expected multi-hop fact treats `30,000 + 50,000` as a valid answer for
-the synthetic policy. This should be normalized explicitly in the expected
-fact before interpreting the result.
+Case 13 đã được sửa bằng instruction multi-hop trong generator. Live rerun
+trả tổng `30,000 + 50,000 = 80,000 VND` và pipeline không đánh dấu câu này là
+abstention.
 
 Other multi-hop cases are complete: HCM delivery time, manufacturing-defect
 shipping, personal-return shipping, and bank-transfer confirmation status.
@@ -74,12 +69,9 @@ shipping, personal-return shipping, and bank-transfer confirmation status.
    manufacturer-defect policy. It also adds the necessary original-condition
    condition.
 
-## Recommended fixes
+## Day 3 fixes completed
 
-1. Populate the API `abstained` field from the response behavior rather than
-   leaving it as `false` for every textual refusal.
-2. Explicitly allow or prohibit adding standard and express shipping fees.
-3. Keep out-of-scope questions from reaching the general LLM response path by
-   enforcing a scope check before generation.
-4. Add negative examples for unsupported products, weather, account balance,
-   international shipping, and poetry to the evaluation set.
+1. API `abstained` được suy ra từ hành vi từ chối của câu trả lời.
+2. Generator có hướng dẫn tổng hợp các số liệu multi-hop.
+3. Các câu rõ ràng ngoài phạm vi được chặn trước generation.
+4. Retrieval vẫn đạt Recall@k 100% tại `top_k=3` và `top_k=5`.

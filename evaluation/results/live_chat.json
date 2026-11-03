@@ -7,22 +7,22 @@
     "expected_chunks": [
       "shipping_001"
     ],
-    "answer": "Có. Đơn hàng 600.000 VND được miễn phí vận chuyển tiêu chuẩn vì tổng giá trị từ 500.000 VND trở lên.",
+    "answer": "Có. Đơn hàng 600.000 VND được miễn phí vận chuyển tiêu chuẩn vì giá trị từ 500.000 VND trở lên.",
     "sources": [
       {
         "id": "shipping_001",
         "source": "shipping.md",
-        "distance": 0.5465654134750366
+        "distance": 0.5438864231109619
       },
       {
         "id": "faq_001",
         "source": "faq.md",
-        "distance": 0.6664480566978455
+        "distance": 0.6654977798461914
       },
       {
         "id": "shipping_003",
         "source": "shipping.md",
-        "distance": 0.8790403604507446
+        "distance": 0.8773270845413208
       }
     ],
     "abstained": false
@@ -35,7 +35,7 @@
     "expected_chunks": [
       "shipping_001"
     ],
-    "answer": "Đơn hàng 300.000 VND có phí giao hàng tiêu chuẩn là **30.000 VND**.",
+    "answer": "Đơn hàng 300.000 VND dưới 500.000 VND nên phí giao hàng tiêu chuẩn là **30.000 VND**.",
     "sources": [
       {
         "id": "shipping_001",
@@ -68,17 +68,17 @@
       {
         "id": "faq_002",
         "source": "faq.md",
-        "distance": 0.4878811836242676
+        "distance": 0.4879087805747986
       },
       {
         "id": "returns_001",
         "source": "returns.md",
-        "distance": 0.4964984059333801
+        "distance": 0.49646925926208496
       },
       {
         "id": "returns_002",
         "source": "returns.md",
-        "distance": 0.672040581703186
+        "distance": 0.6720185279846191
       }
     ],
     "abstained": false
@@ -175,7 +175,7 @@
     "expected_chunks": [
       "shipping_002"
     ],
-    "answer": "Đơn hàng đến Hà Nội thường được giao trong **2–4 ngày làm việc**, tính từ khi đơn hàng được xác nhận và bàn giao cho đơn vị vận chuyển.",
+    "answer": "Đơn hàng đến Hà Nội thường được giao trong 2–4 ngày làm việc, tính từ khi đơn hàng được xác nhận và bàn giao cho đơn vị vận chuyển.",
     "sources": [
       {
         "id": "shipping_002",
@@ -203,7 +203,7 @@
     "expected_chunks": [
       "faq_006"
     ],
-    "answer": "Hiện tài liệu chưa xác nhận Orbit Shop có hỗ trợ thanh toán bằng Bitcoin hay không. Bạn vui lòng liên hệ bộ phận hỗ trợ để được xác nhận.",
+    "answer": "Không có thông tin xác nhận Orbit Shop có hỗ trợ thanh toán bằng Bitcoin hay không. Bạn nên liên hệ bộ phận hỗ trợ để được xác nhận.",
     "sources": [
       {
         "id": "faq_006",
@@ -221,7 +221,7 @@
         "distance": 0.601426362991333
       }
     ],
-    "abstained": false
+    "abstained": true
   },
   {
     "index": 9,
@@ -231,7 +231,7 @@
     "expected_chunks": [
       "shipping_003"
     ],
-    "answer": "Dịch vụ giao hàng nhanh có phí **50.000 VND cho mỗi đơn hàng**.",
+    "answer": "Phí giao hàng nhanh là **50.000 VND cho mỗi đơn hàng**.",
     "sources": [
       {
         "id": "shipping_003",
@@ -259,22 +259,22 @@
     "expected_chunks": [
       "P002"
     ],
-    "answer": "Bàn phím cơ Mechanical Keyboard có giá 850.000 VND.",
+    "answer": "Mechanical Keyboard hiện có giá 850.000 VND.",
     "sources": [
       {
         "id": "P002",
         "source": "products.csv",
-        "distance": 0.7069315910339355
+        "distance": 0.7069792747497559
       },
       {
         "id": "P001",
         "source": "products.csv",
-        "distance": 1.055122971534729
+        "distance": 1.0552531480789185
       },
       {
         "id": "P008",
         "source": "products.csv",
-        "distance": 1.1546287536621094
+        "distance": 1.154653787612915
       }
     ],
     "abstained": false
@@ -287,7 +287,7 @@
     "expected_chunks": [
       "shipping_002"
     ],
-    "answer": "Đơn hàng giao tại khu vực nội thành TP. Hồ Chí Minh thường mất **1–2 ngày làm việc**, tính từ khi đơn được xác nhận và bàn giao cho đơn vị vận chuyển.",
+    "answer": "Đơn hàng giao tại khu vực nội thành TP. Hồ Chí Minh thường mất 1–2 ngày làm việc kể từ khi được xác nhận và bàn giao cho đơn vị vận chuyển.",
     "sources": [
       {
         "id": "shipping_002",
@@ -315,7 +315,7 @@
     "expected_chunks": [
       "returns_003"
     ],
-    "answer": "Nếu sản phẩm được xác nhận lỗi do nhà sản xuất, Orbit Shop chịu phí vận chuyển đổi trả.",
+    "answer": "Orbit Shop chịu phí vận chuyển đổi trả nếu sản phẩm được xác nhận lỗi do nhà sản xuất.",
     "sources": [
       {
         "id": "faq_003",
@@ -344,7 +344,7 @@
       "shipping_001",
       "shipping_003"
     ],
-    "answer": "Đơn hàng 450.000 VND có phí vận chuyển tiêu chuẩn 30.000 VND. Giao hàng nhanh tại Hà Nội có phí 50.000 VND/đơn. Context không nêu rõ phí nhanh có cộng thêm phí tiêu chuẩn hay thay thế phí tiêu chuẩn, nên chưa thể xác định tổng phí chính xác.",
+    "answer": "Đơn hàng 450.000 VND có phí vận chuyển tiêu chuẩn 30.000 VND. Giao hàng nhanh thêm 50.000 VND, nên tổng phí vận chuyển là **80.000 VND**. Hà Nội có áp dụng giao hàng nhanh.",
     "sources": [
       {
         "id": "faq_001",
@@ -372,7 +372,7 @@
     "expected_chunks": [
       "returns_005"
     ],
-    "answer": "Đổi trả vì đổi ý thuộc lý do cá nhân, nên bạn chịu phí vận chuyển đổi trả. Sản phẩm cần còn nguyên trạng, đủ phụ kiện và đáp ứng thời hạn, điều kiện theo chính sách.",
+    "answer": "Không có thông tin xác nhận “đổi ý” được phân loại cụ thể, nhưng nếu đây là đổi trả vì lý do cá nhân thì khách hàng chịu phí vận chuyển đổi trả. Hàng vẫn cần đáp ứng thời hạn và điều kiện đổi trả.",
     "sources": [
       {
         "id": "faq_003",
@@ -400,8 +400,13 @@
     "expected_chunks": [
       "payment_004"
     ],
-    "answer": "Bạn hãy kiểm tra xem đã ghi đúng nội dung chuyển khoản theo hướng dẫn khi đặt hàng chưa. Nếu vẫn chưa thấy trạng thái thanh toán, hiện mình chưa có thông tin về cách xử lý hoặc thời gian xác nhận cụ thể.",
+    "answer": "Bạn nên kiểm tra lại thông tin giao dịch và nội dung chuyển khoản đã ghi đúng theo hướng dẫn chưa, sau đó liên hệ bộ phận hỗ trợ. Tôi không thể xác nhận giao dịch cụ thể nếu chưa được kết nối với dữ liệu thanh toán thực tế.",
     "sources": [
+      {
+        "id": "payment_004",
+        "source": "payment.md",
+        "distance": 0.8019289374351501
+      },
       {
         "id": "payment_002",
         "source": "payment.md",
@@ -411,11 +416,6 @@
         "id": "faq_005",
         "source": "faq.md",
         "distance": 0.9672055244445801
-      },
-      {
-        "id": "returns_002",
-        "source": "returns.md",
-        "distance": 0.9811908006668091
       }
     ],
     "abstained": false
@@ -428,7 +428,7 @@
     "expected_chunks": [
       "returns_004"
     ],
-    "answer": "Không. Nếu hàng rách do bạn làm rơi, đây là hư hỏng do tác động từ phía khách hàng, nên không được miễn phí đổi trả theo diện lỗi nhà sản xuất.",
+    "answer": "Không. Hàng rách do bạn làm rơi là hư hỏng do tác động từ phía khách hàng, nên không được miễn phí đổi trả theo diện lỗi nhà sản xuất.",
     "sources": [
       {
         "id": "faq_003",
@@ -456,7 +456,7 @@
     "expected_chunks": [
       "payment_001"
     ],
-    "answer": "Có. Shop hỗ trợ thanh toán khi nhận hàng (COD) với đơn hàng đủ điều kiện; bạn thanh toán trực tiếp cho đơn vị giao hàng khi nhận sản phẩm.",
+    "answer": "Có. Shop hỗ trợ thanh toán khi nhận hàng (COD) với các đơn đủ điều kiện; khách trả tiền trực tiếp cho đơn vị giao hàng khi nhận sản phẩm.",
     "sources": [
       {
         "id": "shipping_004",
@@ -484,7 +484,7 @@
     "expected_chunks": [
       "shipping_004"
     ],
-    "answer": "Bạn có thể dùng mã vận đơn trong thông báo giao hàng để theo dõi trạng thái kiện hàng. Trợ lý không thể tra cứu trực tiếp nếu chưa được kết nối với dữ liệu vận chuyển thực tế.",
+    "answer": "Bạn có thể dùng mã vận đơn trong thông báo giao hàng để theo dõi trạng thái kiện hàng.",
     "sources": [
       {
         "id": "shipping_004",
@@ -497,9 +497,9 @@
         "distance": 0.9509536623954773
       },
       {
-        "id": "returns_002",
-        "source": "returns.md",
-        "distance": 1.1340415477752686
+        "id": "payment_004",
+        "source": "payment.md",
+        "distance": 1.1282728910446167
       }
     ],
     "abstained": false
@@ -512,7 +512,7 @@
     "expected_chunks": [
       "payment_003"
     ],
-    "answer": "Giao dịch thanh toán bằng thẻ chỉ được xem là thành công sau khi hệ thống xác nhận kết quả từ cổng thanh toán.",
+    "answer": "Giao dịch thanh toán bằng thẻ chỉ được xem là hoàn tất sau khi hệ thống xác nhận kết quả từ cổng thanh toán.",
     "sources": [
       {
         "id": "payment_003",
@@ -520,14 +520,14 @@
         "distance": 1.0827302932739258
       },
       {
+        "id": "payment_004",
+        "source": "payment.md",
+        "distance": 1.1856541633605957
+      },
+      {
         "id": "payment_001",
         "source": "payment.md",
         "distance": 1.2134510278701782
-      },
-      {
-        "id": "payment_002",
-        "source": "payment.md",
-        "distance": 1.2391263246536255
       }
     ],
     "abstained": false
@@ -540,22 +540,22 @@
     "expected_chunks": [
       "returns_002"
     ],
-    "answer": "Món hàng đổi trả phải còn nguyên trạng, đầy đủ phụ kiện đi kèm và không có dấu hiệu hư hỏng do người sử dụng gây ra.",
+    "answer": "Sản phẩm cần còn nguyên trạng, đầy đủ phụ kiện đi kèm và không có dấu hiệu hư hỏng do người sử dụng gây ra.",
     "sources": [
       {
         "id": "returns_002",
         "source": "returns.md",
-        "distance": 0.9414036273956299
+        "distance": 0.9413306713104248
       },
       {
         "id": "returns_005",
         "source": "returns.md",
-        "distance": 1.0986295938491821
+        "distance": 1.0985920429229736
       },
       {
         "id": "returns_001",
         "source": "returns.md",
-        "distance": 1.1856205463409424
+        "distance": 1.1855647563934326
       }
     ],
     "abstained": false
@@ -566,25 +566,25 @@
     "expected_fact": "Không có thông tin xác nhận phương thức Ethereum trong tài liệu.",
     "category": "no_answer",
     "expected_chunks": [],
-    "answer": "Tài liệu hiện tại chưa xác nhận Orbit Shop có hỗ trợ thanh toán bằng Ethereum hay không. Bạn vui lòng liên hệ bộ phận hỗ trợ để được xác nhận.",
+    "answer": "Không có thông tin xác nhận Orbit Shop có nhận thanh toán bằng Ethereum hay không. Bạn nên liên hệ bộ phận hỗ trợ để được xác nhận.",
     "sources": [
       {
         "id": "faq_004",
         "source": "faq.md",
-        "distance": 0.8602741956710815
+        "distance": 0.8603744506835938
       },
       {
         "id": "payment_003",
         "source": "payment.md",
-        "distance": 0.8912878036499023
+        "distance": 0.8913513422012329
       },
       {
         "id": "faq_006",
         "source": "faq.md",
-        "distance": 0.9411420226097107
+        "distance": 0.9412202835083008
       }
     ],
-    "abstained": false
+    "abstained": true
   },
   {
     "index": 22,
@@ -592,7 +592,7 @@
     "expected_fact": "Không có chính sách trả góp trong tài liệu.",
     "category": "no_answer",
     "expected_chunks": [],
-    "answer": "Tài liệu hiện tại chỉ xác nhận Orbit Shop hỗ trợ thanh toán bằng thẻ ngân hàng qua cổng thanh toán trên website, chưa có thông tin về trả góp qua thẻ tín dụng. Bạn vui lòng liên hệ bộ phận hỗ trợ để được xác nhận.",
+    "answer": "Không có thông tin xác nhận Orbit Shop có hỗ trợ trả góp qua thẻ tín dụng. Tài liệu chỉ cho biết cửa hàng hỗ trợ thanh toán bằng thẻ ngân hàng qua cổng thanh toán trên website.",
     "sources": [
       {
         "id": "payment_000",
@@ -610,7 +610,7 @@
         "distance": 0.7022178769111633
       }
     ],
-    "abstained": false
+    "abstained": true
   },
   {
     "index": 23,
@@ -618,7 +618,7 @@
     "expected_fact": "Tài liệu không có thông tin bảo hành.",
     "category": "no_answer",
     "expected_chunks": [],
-    "answer": "Hiện chưa có thông tin về thời hạn bảo hành của Portable SSD 1TB trong dữ liệu được cung cấp.",
+    "answer": "Không có thông tin xác nhận về thời hạn bảo hành của Portable SSD 1TB trong dữ liệu hiện có.",
     "sources": [
       {
         "id": "P006",
@@ -636,7 +636,7 @@
         "distance": 1.1338982582092285
       }
     ],
-    "abstained": false
+    "abstained": true
   },
   {
     "index": 24,
@@ -644,7 +644,7 @@
     "expected_fact": "Tài liệu không quy định đổi địa chỉ sau khi bàn giao.",
     "category": "no_answer",
     "expected_chunks": [],
-    "answer": "Hiện mình chưa có thông tin về việc có thể đổi địa chỉ giao hàng sau khi đơn đã được giao cho shipper hay không. Bạn vui lòng liên hệ Orbit Shop để được xác nhận.",
+    "answer": "Không có thông tin xác nhận về việc đổi địa chỉ giao hàng sau khi đơn đã được giao cho shipper.",
     "sources": [
       {
         "id": "faq_002",
@@ -662,7 +662,7 @@
         "distance": 0.955372154712677
       }
     ],
-    "abstained": false
+    "abstained": true
   },
   {
     "index": 25,
@@ -670,7 +670,7 @@
     "expected_fact": "Tài liệu không nêu giao hàng quốc tế.",
     "category": "no_answer",
     "expected_chunks": [],
-    "answer": "Hiện mình chưa có thông tin xác nhận Orbit Shop có giao hàng quốc tế sang Mỹ hay không. Thông tin hiện có chỉ nêu dịch vụ giao hàng nhanh tại TP. Hồ Chí Minh và Hà Nội.",
+    "answer": "Không có thông tin xác nhận Orbit Shop có giao hàng quốc tế sang Mỹ.",
     "sources": [
       {
         "id": "shipping_003",
@@ -688,7 +688,7 @@
         "distance": 1.1712677478790283
       }
     ],
-    "abstained": false
+    "abstained": true
   },
   {
     "index": 26,
@@ -696,25 +696,9 @@
     "expected_fact": "Hệ thống không có dữ liệu đơn hàng cụ thể và mã vận đơn.",
     "category": "out_of_scope",
     "expected_chunks": [],
-    "answer": "Mình chưa thể xác định đơn hàng DH12345 đang ở kho nào vì không có dữ liệu vận chuyển thực tế. Bạn có thể dùng mã vận đơn trong thông báo giao hàng để theo dõi trạng thái.",
-    "sources": [
-      {
-        "id": "faq_005",
-        "source": "faq.md",
-        "distance": 0.9646327495574951
-      },
-      {
-        "id": "shipping_004",
-        "source": "shipping.md",
-        "distance": 1.0403189659118652
-      },
-      {
-        "id": "payment_001",
-        "source": "payment.md",
-        "distance": 1.0458861589431763
-      }
-    ],
-    "abstained": false
+    "answer": "Xin lỗi, yêu cầu này nằm ngoài phạm vi hỗ trợ của cửa hàng và tôi không thể thực hiện.",
+    "sources": [],
+    "abstained": true
   },
   {
     "index": 27,
@@ -722,25 +706,9 @@
     "expected_fact": "Ngoài phạm vi dữ liệu cửa hàng công khai.",
     "category": "out_of_scope",
     "expected_chunks": [],
-    "answer": "Hiện tôi không có thông tin để kiểm tra tình trạng ví tiền của tài khoản bạn.",
-    "sources": [
-      {
-        "id": "payment_003",
-        "source": "payment.md",
-        "distance": 1.2548573017120361
-      },
-      {
-        "id": "faq_005",
-        "source": "faq.md",
-        "distance": 1.2892463207244873
-      },
-      {
-        "id": "payment_002",
-        "source": "payment.md",
-        "distance": 1.2916595935821533
-      }
-    ],
-    "abstained": false
+    "answer": "Xin lỗi, yêu cầu này nằm ngoài phạm vi hỗ trợ của cửa hàng và tôi không thể thực hiện.",
+    "sources": [],
+    "abstained": true
   },
   {
     "index": 28,
@@ -748,25 +716,9 @@
     "expected_fact": "Hệ thống không được tích hợp hoàn tiền.",
     "category": "out_of_scope",
     "expected_chunks": [],
-    "answer": "Mình không thể tự động hoàn tiền hoặc truy cập tài khoản của bạn. Thông tin hiện có cũng chưa nêu quy trình hoàn tiền; vui lòng liên hệ bộ phận hỗ trợ của Orbit Shop để được hướng dẫn.",
-    "sources": [
-      {
-        "id": "faq_004",
-        "source": "faq.md",
-        "distance": 0.9502439498901367
-      },
-      {
-        "id": "payment_003",
-        "source": "payment.md",
-        "distance": 1.1066081523895264
-      },
-      {
-        "id": "faq_005",
-        "source": "faq.md",
-        "distance": 1.1238908767700195
-      }
-    ],
-    "abstained": false
+    "answer": "Xin lỗi, yêu cầu này nằm ngoài phạm vi hỗ trợ của cửa hàng và tôi không thể thực hiện.",
+    "sources": [],
+    "abstained": true
   },
   {
     "index": 29,
@@ -774,25 +726,9 @@
     "expected_fact": "Không thuộc dữ liệu cửa hàng và không có công cụ thời tiết.",
     "category": "out_of_scope",
     "expected_chunks": [],
-    "answer": "Mình không có dữ liệu thời tiết hiện tại nên không thể xác nhận hôm nay ở Hà Nội có mưa hay không.",
-    "sources": [
-      {
-        "id": "shipping_003",
-        "source": "shipping.md",
-        "distance": 1.4719674587249756
-      },
-      {
-        "id": "faq_005",
-        "source": "faq.md",
-        "distance": 1.5195796489715576
-      },
-      {
-        "id": "shipping_002",
-        "source": "shipping.md",
-        "distance": 1.5445220470428467
-      }
-    ],
-    "abstained": false
+    "answer": "Xin lỗi, yêu cầu này nằm ngoài phạm vi hỗ trợ của cửa hàng và tôi không thể thực hiện.",
+    "sources": [],
+    "abstained": true
   },
   {
     "index": 30,
@@ -800,24 +736,8 @@
     "expected_fact": "Yêu cầu không thuộc phạm vi hỗ trợ cửa hàng.",
     "category": "out_of_scope",
     "expected_chunks": [],
-    "answer": "Được chứ:\n\nTình yêu như nắng đầu ngày,  \nKhẽ hong ấm những tháng ngày mưa giông.  \nDẫu xa cách mấy mùa đông,  \nChỉ cần chung một tấm lòng, vẫn vui.",
-    "sources": [
-      {
-        "id": "returns_005",
-        "source": "returns.md",
-        "distance": 1.4935520887374878
-      },
-      {
-        "id": "faq_002",
-        "source": "faq.md",
-        "distance": 1.5065189599990845
-      },
-      {
-        "id": "returns_001",
-        "source": "returns.md",
-        "distance": 1.5182569026947021
-      }
-    ],
-    "abstained": false
+    "answer": "Xin lỗi, yêu cầu này nằm ngoài phạm vi hỗ trợ của cửa hàng và tôi không thể thực hiện.",
+    "sources": [],
+    "abstained": true
   }
 ]

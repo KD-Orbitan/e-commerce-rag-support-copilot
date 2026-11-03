@@ -1,8 +1,9 @@
 
 import gradio as gr
 import requests
+import os
 
-API_URL = "http://127.0.0.1:8000/chat"
+API_URL = os.getenv("RAG_API_URL", "http://127.0.0.1:8000/chat")
 
 
 def respond(message, history):
@@ -55,4 +56,7 @@ demo = gr.ChatInterface(
 )
 
 if __name__ == "__main__":
-    demo.launch()
+    demo.launch(
+        server_name="0.0.0.0",
+        server_port=int(os.getenv("GRADIO_SERVER_PORT", "7860")),
+    )
