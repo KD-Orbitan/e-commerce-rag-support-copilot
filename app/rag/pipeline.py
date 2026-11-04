@@ -367,7 +367,6 @@ def is_relevant_product_match(question: str, match: dict) -> bool:
         }
         for word in meaningful_words
     )
-    return False
 
 
 def is_screen_mirroring_question(question: str) -> bool:

@@ -58,7 +58,7 @@ else:
     except Exception as exc:
         st.error(
             "Khong the khoi tao co so du lieu. "
-            f"{type(exc).__name__}."
+            f"{type(exc).__name__}: {exc}"
         )
 
 

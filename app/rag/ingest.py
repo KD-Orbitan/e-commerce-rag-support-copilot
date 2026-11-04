@@ -259,7 +259,9 @@ def embed_and_store(chunks: list[dict]) -> None:
     )
 
     # Bước 3: Lưu nội dung, vector và metadata
-    collection.delete()
+    existing_ids = collection.get(include=[]).get("ids", [])
+    if existing_ids:
+        collection.delete(ids=existing_ids)
     collection.upsert(
         ids=[chunk["id"] for chunk in chunks],
         documents=texts,
