@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 from openai import OpenAI
 import chromadb
 import re
+import hashlib
+import json
 from app.config import EMBEDDING_MODEL
 
 # Xác định thư mục gốc của project
@@ -56,20 +58,26 @@ def load_documents() -> list[dict]:
             "content": content,
         })
 
-    product_texts = load_products(DATA_DIR / "products.csv")
+    with (DATA_DIR / "products.csv").open("r", encoding="utf-8-sig", newline="") as file:
+        products = list(csv.DictReader(file))
 
-    for product_text in product_texts:
-        # Lấy Product ID để nhận diện document ổn định.
-        product_id = next(
-            line.split(": ", 1)[1]
-            for line in product_text.splitlines()
-            if line.startswith("Product ID:")
+    for product in products:
+        product_text = (
+            f"Product ID: {product['id']}\n"
+            f"Name: {product['name']}\n"
+            f"Category: {product['category']}\n"
+            f"Price: {product['price_vnd']} VND\n"
+            f"Description: {product['description']}"
         )
-
+        # Lấy Product ID để nhận diện document ổn định.
         documents.append({
             "source": "products.csv",
             "content": product_text,
-            "document_id": product_id,
+            "document_id": product["id"],
+            "product_id": product["id"],
+            "name": product["name"],
+            "category": product["category"],
+            "price_vnd": int(product["price_vnd"]),
         })
 
     return documents
@@ -181,10 +189,41 @@ def create_chunks(documents: list[dict]) -> list[dict]:
                 "id": chunk_id,
                 "source": source,
                 "text": part,
+                "product_id": doc.get("product_id"),
+                "name": doc.get("name"),
+                "category": doc.get("category"),
+                "price_vnd": doc.get("price_vnd"),
             })
 
     return chunks
 
+
+
+def clean_metadata(chunk: dict) -> dict:
+    return {
+        key: value
+        for key, value in {
+            "source": chunk["source"],
+            "product_id": chunk.get("product_id"),
+            "name": chunk.get("name"),
+            "category": chunk.get("category"),
+            "price_vnd": chunk.get("price_vnd"),
+        }.items()
+        if value is not None
+    }
+
+
+def source_fingerprint() -> str:
+    payload = []
+    for path in sorted(DATA_DIR.iterdir()):
+        if path.is_file() and path.suffix.lower() in {".csv", ".md"}:
+            payload.append({
+                "path": path.name,
+                "content": path.read_text(encoding="utf-8-sig"),
+            })
+    return hashlib.sha256(
+        json.dumps(payload, ensure_ascii=False, sort_keys=True).encode("utf-8")
+    ).hexdigest()
 
 
 def embed_and_store(chunks: list[dict]) -> None:
@@ -220,12 +259,13 @@ def embed_and_store(chunks: list[dict]) -> None:
     )
 
     # Bước 3: Lưu nội dung, vector và metadata
+    collection.delete()
     collection.upsert(
         ids=[chunk["id"] for chunk in chunks],
         documents=texts,
         embeddings=embeddings,
         metadatas=[
-            {"source": chunk["source"]}
+            clean_metadata(chunk)
             for chunk in chunks
         ],
     )
@@ -237,7 +277,7 @@ def embed_and_store(chunks: list[dict]) -> None:
 
 
 def ensure_index() -> str:
-    """Create the local index once when it is empty."""
+    """Tạo lại index chỉ khi dữ liệu nguồn hoặc embedding model thay đổi."""
     load_dotenv()
 
     if not os.getenv("OPENAI_API_KEY"):
@@ -250,12 +290,24 @@ def ensure_index() -> str:
         name="orbit_shop_knowledge"
     )
 
-    if collection.count() > 0:
+    fingerprint = source_fingerprint()
+    index_metadata = collection.metadata or {}
+    if (
+        collection.count() > 0
+        and index_metadata.get("source_fingerprint") == fingerprint
+        and index_metadata.get("embedding_model") == EMBEDDING_MODEL
+    ):
         return f"Index đã sẵn sàng với {collection.count()} documents."
 
     documents = load_documents()
     chunks = create_chunks(documents)
     embed_and_store(chunks)
+
+    collection = chroma_client.get_collection(name="orbit_shop_knowledge")
+    collection.modify(metadata={
+        "source_fingerprint": fingerprint,
+        "embedding_model": EMBEDDING_MODEL,
+    })
     return f"Index đã được khởi tạo với {collection.count()} documents."
 
 

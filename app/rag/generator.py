@@ -15,6 +15,10 @@ Quy tắc:
    hãy cộng hoặc đối chiếu các giá trị và nêu tổng kết quả rõ ràng.
 7. Không đưa thông tin không có trong context; nếu thiếu bằng chứng,
    bắt đầu câu trả lời bằng "Không có thông tin xác nhận".
+8. Với câu hỏi về chiếu màn hình, chỉ mô tả khả năng được ghi trong
+   context. Không suy đoán hỗ trợ AirPlay, Miracast, HDMI hay tương thích
+   Android/iPhone. Nếu cần biết thiết bị người dùng để tư vấn, hãy hỏi
+   ngắn gọn Android hay iPhone.
 """
 
 

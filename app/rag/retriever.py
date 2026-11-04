@@ -12,7 +12,28 @@ DB_PATH = PROJECT_ROOT / "chroma_db"
 COLLECTION_NAME = "orbit_shop_knowledge"
 
 
-def search_knowledge(question: str, top_k: int = 3) -> list[dict]:
+def get_collection():
+    chroma_client = chromadb.PersistentClient(path=str(DB_PATH))
+    try:
+        return chroma_client.get_collection(name=COLLECTION_NAME)
+    except Exception as exc:
+        raise ValueError(
+            "Collection orbit_shop_knowledge chưa tồn tại. "
+            "Hãy chạy ingest.ensure_index() trước."
+        ) from exc
+
+
+def get_distance_metric(collection) -> str:
+    configuration = getattr(collection._model, "configuration_json", {})
+    hnsw = configuration.get("hnsw", {})
+    return hnsw.get("space", "unknown")
+
+
+def search_knowledge(
+    question: str,
+    top_k: int = 3,
+    source: str | None = None,
+) -> list[dict]:
     """Tìm các chunks liên quan nhất đến câu hỏi."""
 
     load_dotenv()
@@ -34,11 +55,7 @@ def search_knowledge(question: str, top_k: int = 3) -> list[dict]:
     query_embedding = response.data[0].embedding
 
     # 2. Kết nối với ChromaDB đã tạo trong ingest.py
-    chroma_client = chromadb.PersistentClient(path=str(DB_PATH))
-
-    collection = chroma_client.get_collection(
-        name=COLLECTION_NAME
-    )
+    collection = get_collection()
 
     total_chunks = collection.count()
 
@@ -46,10 +63,20 @@ def search_knowledge(question: str, top_k: int = 3) -> list[dict]:
         return []
 
     # 3. Tìm các vector gần nhất
+    if source:
+        source_ids = collection.get(where={"source": source}, include=[]).get("ids", [])
+        result_count = len(source_ids)
+    else:
+        result_count = total_chunks
+
+    if result_count == 0:
+        return []
+
     results = collection.query(
         query_embeddings=[query_embedding],
-        n_results=min(top_k, total_chunks),
+        n_results=min(max(top_k, result_count), result_count),
         include=["documents", "metadatas", "distances"],
+        where={"source": source} if source else None,
     )
 
     # 4. Chuyển kết quả thành danh sách dễ sử dụng
@@ -59,7 +86,8 @@ def search_knowledge(question: str, top_k: int = 3) -> list[dict]:
         matches.append({
             "id": results["ids"][0][i],
             "text": results["documents"][0][i],
-            "source": results["metadatas"][0][i]["source"],
+            "metadata": results["metadatas"][0][i],
+            "source": results["metadatas"][0][i].get("source"),
             "distance": results["distances"][0][i],
         })
 

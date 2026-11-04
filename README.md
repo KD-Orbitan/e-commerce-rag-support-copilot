@@ -1,6 +1,6 @@
 ---
 title: Orbit Shop RAG Support Copilot
-emoji: 🛍️
+emoji: "\U0001F6CD\U0000FE0F"
 colorFrom: blue
 colorTo: indigo
 sdk: gradio
@@ -10,43 +10,127 @@ pinned: false
 
 # Orbit Shop RAG Support Copilot
 
-Orbit Shop là một trợ lý hỗ trợ khách hàng bằng tiếng Việt, sử dụng Retrieval-Augmented
-Generation (RAG) để trả lời từ tài liệu cửa hàng thay vì tự suy đoán chính sách.
+Orbit Shop is a Vietnamese customer-support copilot built around
+Retrieval-Augmented Generation (RAG). It answers from store Markdown policies
+and a structured product catalog while distinguishing documented facts from
+unsupported assumptions.
 
-## Mục tiêu và use case
+## Overview and use cases
 
-- Trả lời câu hỏi về thanh toán, giao hàng, đổi trả và sản phẩm.
-- Trích dẫn đúng chunk tài liệu đã truy xuất.
-- Từ chối câu hỏi không có dữ liệu hoặc nằm ngoài phạm vi cửa hàng.
-- Hỗ trợ thử nghiệm qua API FastAPI và giao diện chat Gradio.
+- Product discovery from the current `products.csv` catalog.
+- Shipping, payment, returns, warranty, and FAQ policy questions.
+- Grounded answers with source citations and abstention behavior.
+- Out-of-scope request handling.
+- FastAPI, Gradio, and Streamlit interfaces.
 
-## Kiến trúc
+## Implemented features
+
+- Hybrid intent routing: deterministic rules for clear intents plus a
+  confidence-controlled OpenAI fallback for ambiguous intents.
+- Structured full-catalog lookup without vector search.
+- Source-filtered product retrieval from ChromaDB.
+- Chunk/source citations and abstention for retrieved answers.
+- Product metadata including ID, name, category, and price.
+- Source fingerprint and embedding-model checks before index reuse.
+- Conservative generation prompts that discourage unsupported product claims.
+- Unit tests for routing, fallback behavior, pipeline boundaries, citations,
+  and documented product facts.
+
+## Technology stack
+
+- Python
+- OpenAI embeddings and chat completions
+- ChromaDB
+- FastAPI and Pydantic
+- Gradio and Streamlit
+- pytest
+
+## Architecture
 
 ```text
-Giao diện Gradio
+User question
       |
       v
-POST /chat (FastAPI) hoặc app.py (Gradio Space)
+Intent router
+  |-- greeting / capability / product catalog rules
+  |-- policy / product rules
+  `-- JSON LLM fallback with confidence validation
       |
-      v
-RAG pipeline -> từ chối ngoài phạm vi -> vector retrieval -> OpenAI generation
-      |                                           |
-      |                                           v
-      |                                   ChromaDB + chunks
-      v
-Câu trả lời + nguồn tài liệu + trạng thái abstained
+      +--> Direct greeting/capability response
+      |
+      +--> Structured CSV catalog lookup
+      |
+      +--> Product vector retrieval with source = products.csv
+      |
+      `--> Policy/general vector retrieval
+                  |
+                  v
+          Embedding -> ChromaDB top-k chunks -> grounded generation
+                                                        |
+                                                        v
+                                        Answer + citations + abstention
 ```
 
-- `data/`: tài liệu Markdown, catalog sản phẩm và bộ đánh giá.
-- `app/rag/ingest.py`: đọc tài liệu, chia chunk, tạo embedding và lưu ChromaDB.
-- `app/rag/retriever.py`: embedding câu hỏi và truy xuất top-k chunk.
-- `app/rag/generator.py`: sinh câu trả lời có căn cứ bằng OpenAI.
-- `app/rag/pipeline.py`: điều phối retrieval, citatation và abstention.
-- `evaluation/`: đo retrieval và chạy đánh giá trực tiếp qua API.
+## RAG pipeline
 
-## Chạy local
+1. Markdown policies and `products.csv` are loaded in `app/rag/ingest.py`.
+2. Markdown is split into heading-aware chunks; each CSV product becomes one
+   document.
+3. Text chunks are embedded with the configured embedding model.
+4. ChromaDB stores vectors, documents, IDs, and source/product metadata.
+5. Rule-based routing handles clear greeting, capability, catalog, policy,
+   and sufficiently specific product-search queries without an LLM call.
+6. Ambiguous remaining intents use the configured chat model, with a JSON
+   schema, supported-intent validation, confidence validation, and safe
+   fallback to `general`.
+7. Policy and general questions use normal vector retrieval. Individual
+   product searches are restricted to `products.csv`.
+8. Retrieved chunks become generation context; supporting IDs, sources, and
+   retrieval distances are returned with the answer.
 
-Yêu cầu Python 3.11 trở lên.
+### Structured product lookup
+
+Full-catalog questions read `data/products.csv` directly. This avoids using
+top-k vector search to answer "list everything". These entries are
+structured-source citations, not vector results, and therefore do not display
+fake `0.0000` distances.
+
+Vector distance is not interpreted as a similarity percentage. The current
+Chroma configuration must be evaluated before adding any relevance threshold.
+To propose an evidence-based threshold, run retrieval questions with known
+expected product IDs and compare the distance distributions for correct and
+incorrect results at several `top_k` values. Keep the threshold separate by
+source/model and report precision@k plus recall@k; do not choose a threshold
+from a few subjective examples.
+
+## Project structure
+
+```text
+app/
+  main.py                 FastAPI application
+  schemas.py              API request/response models
+  rag/
+    router.py             Rule-based and LLM intent routing
+    pipeline.py           Routing and retrieval orchestration
+    retriever.py          ChromaDB vector retrieval
+    generator.py          Grounded answer generation
+    ingest.py             Indexing and source consistency
+data/
+  products.csv            Structured product source
+  *.md                    Store policy sources
+  evaluation.json         Retrieval/evaluation cases
+evaluation/
+  evaluate_retrieve.py    Retrieval quality experiment
+  run_live_evaluation.py  API-level live evaluation
+tests/
+  test_core.py            Unit and integration tests
+app.py                    Gradio application
+streamlit_app.py          Streamlit application
+```
+
+## Local setup
+
+Python 3.11 or newer is recommended.
 
 ```powershell
 py -3.11 -m venv .venv
@@ -55,44 +139,41 @@ python -m pip install -r requirements.txt
 copy .env.example .env
 ```
 
-Điền khóa API của bạn trong `.env`:
+Configure API access in `.env`. Do not commit real secrets.
 
 ```dotenv
 OPENAI_API_KEY=your-openai-api-key
 LLM_MODEL=gpt-4o-mini
 EMBEDDING_MODEL=text-embedding-3-small
+ROUTER_CONFIDENCE_THRESHOLD=0.6
 ```
 
-Chạy giao diện Gradio trực tiếp (không cần chạy API riêng):
+Start Gradio:
 
 ```powershell
 python app.py
 ```
 
-Chạy giao diện Streamlit trực tiếp:
+Start Streamlit:
 
 ```powershell
 streamlit run streamlit_app.py
 ```
 
-Hoặc tạo index và chạy API riêng cho local development:
+Create/reuse the index and start FastAPI:
 
 ```powershell
 python -m app.rag.ingest
 uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
-Mở terminal thứ hai:
+API documentation:
 
-```powershell
-python app/ui.py
-```
+- `http://127.0.0.1:8000/docs`
+- `http://127.0.0.1:8000/health`
+- Gradio local demo: `http://127.0.0.1:7860`
 
-- API docs: `http://127.0.0.1:8000/docs`
-- Health check: `http://127.0.0.1:8000/health`
-- Demo Gradio: `http://127.0.0.1:7860`
-
-Ví dụ gọi API:
+Example API request:
 
 ```powershell
 Invoke-RestMethod -Method Post `
@@ -101,78 +182,91 @@ Invoke-RestMethod -Method Post `
   -Body '{"question":"Đơn 300.000 VND thì phí giao hàng tiêu chuẩn là bao nhiêu?","top_k":3}'
 ```
 
-## Kiểm thử
+## Tests
 
 ```powershell
-python -m pytest tests/test_core.py -q
-python evaluation/evaluate_retrieve.py
+python -m pytest -q
+python -m compileall -q app
+python -m pip check
 ```
 
-Để đánh giá API trực tiếp, khởi động API, sau đó chạy:
+Tests use mocks for OpenAI generation/classification where appropriate and do
+not require a real API call for normal unit-test execution.
+
+## Evaluation
+
+Run retrieval evaluation from the project root:
+
+```powershell
+python -m evaluation.evaluate_retrieve
+```
+
+Run live API evaluation after starting FastAPI:
 
 ```powershell
 python evaluation/run_live_evaluation.py
 ```
 
-Kết quả Day 3 được lưu tại [evaluation/results/summary.md](evaluation/results/summary.md)
-và [evaluation/results/live_evaluation.md](evaluation/results/live_evaluation.md).
+Existing artifacts are stored in `evaluation/results/`. Because source data,
+chunking, embeddings, and prompts affect measured quality, rerun evaluation
+after those changes rather than treating historical figures as current.
 
-## Kết quả đánh giá
+## Measured results
 
-| Cấu hình | Recall@chunk | Recall@source | MRR |
-|---|---:|---:|---:|
-| Baseline, top_k=3 | 100% (20/20) | 100% (20/20) | 0.8167 |
-| Experiment, top_k=5 | 100% (20/20) | 100% (20/20) | 0.8167 |
+The retrieval evaluation was run on 2026-11-03 using the current Chroma index
+and `data/evaluation.json`.
 
-Bộ live có 30 câu hỏi; rerun Day 3 đạt 100% correctness trên bản API hiện tại.
-Groundedness/citation và giới hạn từng trường hợp được ghi chi tiết trong báo cáo
-Day 3.
+| Metric | Result |
+|---|---:|
+| Questions | 30 |
+| Answerable questions | 20 |
+| Recall@3 by chunk | 100% (20/20) |
+| Recall@3 by source | 100% (20/20) |
+| MRR@3 | 0.8167 |
+| Direct / multi-hop / paraphrase | 100% / 100% / 100% |
 
-## Deploy Hugging Face Spaces
+These figures measure retrieval only. Generation correctness, groundedness,
+and live deployment behavior require separate live evaluation and human review.
+Historical artifacts are also preserved under `evaluation/results/`, including
+[summary.md](evaluation/results/summary.md). Rerun the experiment after source,
+chunking, embedding-model, or index changes.
 
-1. Tạo Space mới với SDK `Gradio`.
-2. Giữ `ZeroGPU` ở chế độ không bắt buộc; OpenAI API không yêu cầu GPU.
-3. Upload source, dữ liệu và `requirements.txt`; không cần Dockerfile cho Space này.
-4. Thêm `OPENAI_API_KEY` vào Space Secrets; cấu hình `LLM_MODEL` và
-   `EMBEDDING_MODEL` trong Variables nếu muốn ghi đè giá trị mặc định.
-5. Build Space và kiểm tra cả câu có đáp án lẫn câu không có đáp án.
+## Hugging Face Spaces deployment
 
-Không commit khóa API hoặc file `.env`. Không có URL demo placeholder trong README này.
+1. Create a new Gradio Space.
+2. Upload the source, data, and `requirements.txt`.
+3. Add `OPENAI_API_KEY` under Space Secrets.
+4. Configure `LLM_MODEL` and `EMBEDDING_MODEL` only if you need overrides.
+5. Test answerable, product, abstention, and out-of-scope questions.
 
-## Deploy Streamlit Community Cloud
+## Streamlit Community Cloud deployment
 
-1. Đưa repository lên GitHub (không commit `.env`, khóa API hoặc thư mục `chroma_db`).
-2. Trên Streamlit Community Cloud, chọn repository và đặt entry point chính xác là:
-
-```text
-streamlit_app.py
-```
-
-3. Trong phần **App settings > Secrets**, thêm cấu hình:
+1. Do not commit `.env`, API keys, generated secrets, or temporary indexes.
+2. Set the Streamlit entry point to `streamlit_app.py`.
+3. In **App settings > Secrets**, add:
 
 ```toml
 OPENAI_API_KEY = "your-openai-api-key"
 LLM_MODEL = "gpt-4o-mini"
 EMBEDDING_MODEL = "text-embedding-3-small"
+ROUTER_CONFIDENCE_THRESHOLD = "0.6"
 ```
 
-4. Deploy bằng lệnh:
+Streamlit secrets map into the environment variables used by the application.
+On a fresh cloud filesystem, the app runs `ensure_index()` and creates the
+Chroma index from `data/`. Ephemeral storage may be reset by restart or
+redeploy.
 
-```powershell
-streamlit run streamlit_app.py
-```
+## Limitations and future improvements
 
-Ứng dụng đọc model và khóa API từ Streamlit Secrets, sau đó fallback về `.env`
-ở local. Khi chạy trên Streamlit Cloud, thư mục `chroma_db` có thể chưa tồn tại.
-Ứng dụng sẽ tạo index một lần từ các tài liệu trong `data/` bằng `ensure_index()`;
-việc này chỉ gọi embedding API khi collection vẫn trống. Data trong thư mục local
-của Streamlit chỉ tồn tại cho đến khi container restart hoặc redeploy.
-
-## Giới hạn
-
-- Dữ liệu mẫu nhỏ và không đại diện cho mọi đơn hàng hoặc chính sách sản phẩm.
-- Độ chính xác phụ thuộc vào chất lượng retrieval, model embedding và khả năng
-  của nhà cung cấp LLM.
-- Demo không tra cứu đơn hàng thật; mã đơn hàng chỉ được dùng để kiểm tra abstention.
-- Một lần Space restart có thể mất cache/persistent data; ứng dụng chủ động
-  nạp lại tài liệu để xử lý trường hợp này.
+- The sample policy and product data is limited.
+- The demo cannot look up real orders or perform transactions/refunds.
+- Questions with multiple independent demands are not fully orchestrated.
+  Mixed product/policy requests are handled conservatively rather than with
+  speculative product or policy claims.
+- Product capabilities are limited to facts present in `products.csv`.
+- A relevance threshold is intentionally not configured without measured data.
+- Classifier failures safely fall back to `general`; the classifier is not
+  used to assert that a product exists.
+- Persistent cloud storage availability depends on the chosen deployment
+  platform.

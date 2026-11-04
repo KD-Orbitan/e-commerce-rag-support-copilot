@@ -10,7 +10,8 @@ class ChatRequest(BaseModel):
 class Source(BaseModel):
     id: str
     source: str
-    distance: float
+    distance: float | None = None
+    retrieval_type: str = "vector"
 
 
 class ChatResponse(BaseModel):

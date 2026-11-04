@@ -68,11 +68,12 @@ for message in st.session_state.messages:
         if message["role"] == "assistant" and message.get("sources"):
             with st.expander("Nguon tai lieu da truy xuat"):
                 for source in message["sources"]:
-                    st.markdown(
-                        f"- **{source['source']}** "
-                        f"(chunk: `{source['id']}`, "
-                        f"distance: `{source['distance']:.4f}`)"
-                    )
+                    detail = f"- **{source['source']}** (chunk: `{source['id']}`)"
+                    if source.get("distance") is not None:
+                        detail += f", distance: `{source['distance']:.4f}`"
+                    if source.get("retrieval_type") == "structured":
+                        detail += " — structured data lookup"
+                    st.markdown(detail)
 
 
 question = st.chat_input("Nhap cau hoi cua ban...")
@@ -109,11 +110,12 @@ if question:
             if sources:
                 with st.expander("Nguon tai lieu da truy xuat"):
                     for source in sources:
-                        st.markdown(
-                            f"- **{source['source']}** "
-                            f"(chunk: `{source['id']}`, "
-                            f"distance: `{source['distance']:.4f}`)"
-                        )
+                        detail = f"- **{source['source']}** (chunk: `{source['id']}`)"
+                        if source.get("distance") is not None:
+                            detail += f", distance: `{source['distance']:.4f}`"
+                        if source.get("retrieval_type") == "structured":
+                            detail += " — structured data lookup"
+                        st.markdown(detail)
 
         st.session_state.messages.append({
             "role": "assistant",
